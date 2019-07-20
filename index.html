@@ -1,0 +1,294 @@
+
+
+<html>
+<head>
+   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<script type="text/javascript">
+
+var klik = 0;
+var level_atas = 0;
+var level_bawah = 0;
+var levels = "btn1";	
+
+function hitung(tmp){
+
+   var audio = document.getElementById("audio");
+   audio.play();
+ 
+	tmp = parseInt(tmp,10);
+	var old = document.getElementById("nilai").value;
+	old = parseInt(old,10);
+
+	var result = old + tmp;
+	document.getElementById("nilai").value = result;
+	document.getElementById("nilaiasli").value = toRp(result);
+
+	klik = klik + 1;
+	document.getElementById("skor").value = klik;
+
+
+	var randomnilai = document.getElementById("randomnilai").value;
+	
+	if(result > randomnilai ){ // gagal
+		document.getElementById("nilaiasli").style.background = "rgb(221,36,32)";
+		document.getElementById("uang").style.display = 'none';		
+		document.getElementById("gagal").style.display = 'block';		
+		document.getElementById("skor").value = klik-1;
+		document.getElementById("gagal").innerHTML = 'Salah ! Uang nya kelebihan ! <br> <a onclick="randomNilai(levels)">Main Lagi?</a>';
+	    var audio = document.getElementById("audio-lose");
+	    audio.play();
+
+
+	}
+	else if(result == randomnilai ){ // berhasil
+		document.getElementById("nilaiasli").style.background = "rgb(44,185,209)";
+		document.getElementById("uang").style.display = 'none';		
+		document.getElementById("selamat").style.display = 'block';
+		document.getElementById("selamat").innerHTML= 'Selamat Jawaban Anda Benar. <br> <a onclick="randomNilai(levels)">Main Lagi?</a>';		
+	    var audio = document.getElementById("audio-win");
+	    audio.play();
+
+	}
+
+}
+
+function randomNilai(level){
+
+	    var audio = document.getElementById("buttonclick");
+	    audio.play();
+
+
+	if(level == 1){
+
+		 level_atas = 4999;
+		 level_bawah = 1;
+		 levels = "btn1";
+	}	
+	else if(level == 2){
+
+		 level_atas = 1089923; // 1 juta  
+		 level_bawah = 100000; // seratus ribu
+		 levels = "btn2";
+	}
+	else if(level == 3){
+
+		 level_atas = 99999999; // 99 juta
+		 level_bawah = 45000000; // 45 juta
+ 		 levels = "btn3";	
+	}
+
+
+
+	document.getElementById("uang").style.display = 'block';	
+	document.getElementById("selamat").style.display = 'none';			
+	document.getElementById("gagal").style.display = 'none';			
+	document.getElementById("nilai").style.background = "#fff";
+	document.getElementById("nilaiasli").style.background = "#fff";
+	document.getElementById("nilai").value = 0;
+	document.getElementById("nilaiasli").value = toRp(0);
+
+	document.getElementById("btn1").style.background = "#eee";
+	document.getElementById("btn2").style.background = "#eee";
+	document.getElementById("btn3").style.background = "#eee";
+
+	document.getElementById(levels).style.background = "#aaa";
+
+
+	var myArray = ['1000', '500', '200', '100', '50'];    
+	var randomnilai = myArray[Math.floor(Math.random() * myArray.length)];
+	randomnilai = parseInt(randomnilai,10);
+
+
+
+
+	var x = Math.floor(Math.random() * (level_atas - level_bawah + 1)) + level_bawah;
+
+
+
+	document.getElementById("randomnilai").value = randomnilai*x+50;
+	document.getElementById("randomnilaiasli").value = toRp(randomnilai*x+50);	
+	document.getElementById("pecahan1").value = document.getElementById("pecahan1").value .replace(new RegExp("^(\\d{" + (a.length%3?a.length%3:0) + "})(\\d{3})", "g"), "$1 $2").replace(/(\d{3})+?/gi, "$1 ").trim();
+
+
+
+
+}
+
+function toRp(angka){
+    var rev     = parseInt(angka, 10).toString().split('').reverse().join('');
+    var rev2    = '';
+    for(var i = 0; i < rev.length; i++){
+        rev2  += rev[i];
+        if((i + 1) % 3 === 0 && i !== (rev.length - 1)){
+            rev2 += '.';
+        }
+    }
+    return 'Rp. ' + rev2.split('').reverse().join('') + '';
+}
+
+
+
+
+</script>
+
+
+<style type="text/css">
+#nilaiasli{
+	color: #444;
+}
+.randomnilaiasli{
+	background-color: rgb(214,213,180);
+}
+body,a,p{
+	text-align: center;
+	font-family: "Calibri";
+	color: #777;
+}	
+body{
+   background-image: url("images/bg.png");
+   background-repeat: repeat space;
+   background-repeat: repeat repeat;
+   background-repeat: round space;
+   background-attachment: fixed;
+   font-weight: bold;
+}
+.uangkertas{
+	width: 100px;
+	height: 40px;
+	cursor: pointer;
+	padding: 4px;
+}
+.uangkoin{
+	width: 50px;
+	height: 50px;
+	cursor: pointer;
+	padding: 4px;
+
+}
+input[type="text"] {
+  margin: 0;
+  width: 100%;
+  border: 1px ridge #ddd;
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  border: 2px solid #8F908A;
+}
+
+input{
+	padding: 5px;
+	font-family: "Consolas";
+	font-weight: bold;
+}
+#selamat{
+	color: rgb(44,185,209);
+}
+#gagal{
+	color: rgb(221,36,32);
+}
+#btn1,#btn2,#btn3{
+	padding: 5px;
+	margin: 5px;
+}
+</style>
+
+</head>
+
+
+
+
+
+
+
+
+<body onload="randomNilai(1)">
+
+<h4>Pilih Level : </h4>
+<div style="text-align: center;">
+<a onclick="randomNilai(1)"><input type="button" id="btn1" value="Pelajar"></a>
+<a onclick="randomNilai(2)"><input type="button" id="btn2" value="Pedagang"></a> 
+<a  onclick="randomNilai(3)"><input type="button" id="btn3" value="Pengusaha"></a>
+</div>
+
+<br>
+<br>
+<h2 id="selamat"></h2>
+<h2 id="gagal"></h2>
+
+
+<input type="hidden" id="randomnilai" value="0" disabled="disabled">
+<input type="text" id="randomnilaiasli" value="0" disabled="disabled" class="randomnilaiasli">	
+
+<input type="hidden" id="nilai" value="0">
+<input type="text" id="nilaiasli" class="nilaiasli" value="0">
+
+<br>
+
+<div style="text-align: right;">
+<a style="font-size:12px; margin-right:5px; color: #bbbbbb; text-decoration: none;" href="#carabermain">Petunjuk</a>
+</div>
+
+
+<br><br><br>
+
+<div id="uang">
+
+	<img src="images/50.png" class="uangkoin" onclick="hitung(50)">  
+	<img src="images/100.png" class="uangkoin" onclick="hitung(100)">  
+	<img src="images/200.png" class="uangkoin" onclick="hitung(200)">  
+	<img src="images/500.png" class="uangkoin" onclick="hitung(500)">  
+	<img src="images/1000.png" class="uangkoin" onclick="hitung(1000)">  
+
+	<br><br>
+
+	<img src="images/2000.png" class="uangkertas" onclick="hitung(2000)"> 
+	<img src="images/5000.png" class="uangkertas" onclick="hitung(5000)">   
+	<img src="images/10000.png" class="uangkertas" onclick="hitung(10000)">  
+	<img src="images/20000.png" class="uangkertas" onclick="hitung(20000)">  
+	<img src="images/50000.png" class="uangkertas" onclick="hitung(50000)">  
+	<img src="images/100000.png" class="uangkertas" onclick="hitung(100000)">  
+	<img src="images/1juta.png" class="uangkertas" onclick="hitung(1000000)">  
+	<img src="images/10juta.png" class="uangkertas" onclick="hitung(10000000)">  
+	<img src="images/100juta.png" class="uangkertas" onclick="hitung(100000000)">  
+	<img src="images/1miliar.png" class="uangkertas" onclick="hitung(1000000000)">  
+	
+
+
+	<br><br>
+
+</div>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<br>
+<br>
+	<!-- Skor Anda -->
+
+	 <input type="button" value="0" disabled="disabled" id="skor" style="visibility: hidden;">
+
+
+<br>
+<br>
+<br>
+<h4 id="carabermain"><i>Petunjuk Cara Bermain :</i></h4>
+Klik gambar Uang sejumlah Nilai yang tertera di kotak coklat. 
+<br>
+<p style='color:#bbb'>
+developed by
+fachrulreza20@gmail.com
+<br>
+<a href="http://www.sman6medan.sch.id/itunguang">Mainkan di Android <img src="images/download.png"></a>
+</p>
+<audio id="audio" src="fuzzybeep.wav" ></audio>
+<audio id="audio-win" src="wincheering.mp3" ></audio>
+<audio id="audio-lose" src="losecheering.mp3" ></audio>
+<audio id="buttonclick" src="buttonclick.mp3" ></audio>
+
+</body>
+
+</html>
